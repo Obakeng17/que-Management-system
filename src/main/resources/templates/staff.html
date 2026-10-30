@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Staff Panel</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+    <h1>Staff Panel - Counter <span th:text="${counter}">1</span></h1>
+
+    <!-- change counter number -->
+    <form th:action="@{/staff}" method="get">
+        Counter:
+        <input type="number" name="counter" th:value="${counter}" min="1" style="width:60px">
+        <button type="submit" class="grey" style="padding:6px 14px; font-size:14px">Switch</button>
+    </form>
+
+    <div class="card">
+        <h2>Now serving</h2>
+        <div th:if="${current != null}">
+            <div class="big-number" th:text="${current.ticketNumber}">A001</div>
+            <p th:text="${current.serviceType.name}">Service</p>
+
+            <form th:action="@{/staff/done}" method="post" style="display:inline">
+                <input type="hidden" name="counter" th:value="${counter}">
+                <button type="submit" class="green">Done</button>
+            </form>
+            <form th:action="@{/staff/skip}" method="post" style="display:inline">
+                <input type="hidden" name="counter" th:value="${counter}">
+                <button type="submit" class="red">Skip (no show)</button>
+            </form>
+        </div>
+        <p th:if="${current == null}">Nobody at the moment</p>
+
+        <form th:action="@{/staff/next}" method="post">
+            <input type="hidden" name="counter" th:value="${counter}">
+            <button type="submit">Call Next</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Waiting (<span th:text="${#lists.size(waiting)}">0</span>)</h2>
+        <table th:if="${!waiting.isEmpty()}">
+            <tr>
+                <th>Ticket</th>
+                <th>Service</th>
+                <th>Time taken</th>
+            </tr>
+            <tr th:each="t : ${waiting}">
+                <td th:text="${t.ticketNumber}">A001</td>
+                <td th:text="${t.serviceType.name}">Service</td>
+                <td th:text="${#temporals.format(t.createdAt, 'HH:mm')}">09:00</td>
+            </tr>
+        </table>
+        <p th:if="${waiting.isEmpty()}">The queue is empty</p>
+    </div>
+
+    <p><a th:href="@{/}">Go to kiosk</a></p>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="grey" style="padding:8px 18px; font-size:14px">Log out</button>
+    </form>
+</body>
+</html>

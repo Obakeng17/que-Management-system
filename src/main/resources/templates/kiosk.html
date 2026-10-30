@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Take a Number</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+    <h1>Welcome</h1>
+    <p>Please choose a service to get your queue number</p>
+
+    <div class="card">
+        <form th:each="service : ${services}" th:action="@{/take}" method="post">
+            <input type="hidden" name="serviceId" th:value="${service.id}">
+            <button type="submit" th:text="${service.name}">Service</button>
+        </form>
+    </div>
+
+    <p><a th:href="@{/staff}">Staff login</a></p>
+</body>
+</html>

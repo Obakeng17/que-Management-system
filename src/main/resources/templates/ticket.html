@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Your Ticket</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <!-- refresh every 10 seconds so the customer sees updates -->
+    <meta http-equiv="refresh" content="10">
+</head>
+<body>
+    <h1>Your Queue Number</h1>
+
+    <div class="card">
+        <div class="big-number" th:text="${ticket.ticketNumber}">A001</div>
+        <p th:text="${ticket.serviceType.name}">Service</p>
+
+        <p th:if="${ticket.status == 'WAITING'}">
+            Please wait. People ahead of you: <b th:text="${ahead}">0</b>
+        </p>
+        <p th:if="${ticket.status == 'SERVING'}">
+            It's your turn! Go to <b>Counter <span th:text="${ticket.counterNumber}">1</span></b>
+        </p>
+        <p th:if="${ticket.status == 'DONE'}">You have been served. Thank you!</p>
+        <p th:if="${ticket.status == 'SKIPPED'}">Your number was skipped. Please take a new ticket.</p>
+    </div>
+
+    <p><a th:href="@{/}">Back</a></p>
+</body>
+</html>

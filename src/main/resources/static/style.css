@@ -1,0 +1,89 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f4f8;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    color: #1f3a5f;
+}
+
+.card {
+    background: white;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+button {
+    background: #1f6feb;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    border-radius: 8px;
+    margin: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1556b8;
+}
+
+button.grey {
+    background: #6c757d;
+}
+
+button.red {
+    background: #d9534f;
+}
+
+button.green {
+    background: #2e9e4f;
+}
+
+.big-number {
+    font-size: 80px;
+    font-weight: bold;
+    color: #1f6feb;
+    margin: 10px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+a {
+    color: #1f6feb;
+}
+
+input[type="text"], input[type="email"], input[type="password"] {
+    display: block;
+    width: 90%;
+    margin: 10px auto;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+}
+
+.error {
+    color: #d9534f;
+    font-weight: bold;
+}
+
+.success {
+    color: #2e9e4f;
+    font-weight: bold;
+}
