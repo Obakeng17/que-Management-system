@@ -1,38 +1,52 @@
 # Queue Management System
 
-A simple queue system for clinics, fast food shops, banks, etc.
-Built with Spring Boot, Thymeleaf and MySQL (Java 21).
+A web-based queue system for clinics, fast food shops, banks and any business where customers wait in line.
+Customers take a ticket at a kiosk, and staff call people from their counter. Staff accounts are protected
+by login, with register and forgot-password (email reset) features.
 
-## What it does
-- **Kiosk** (`/`) - customer picks a service and gets a ticket number like A001
-- **Ticket page** (`/ticket/{id}`) - shows how many people are ahead, refreshes every 10 seconds
-- **Staff panel** (`/staff?counter=1`) - call next, mark done, skip no-shows
+**Built with:** Java 21, Spring Boot 3, Spring MVC, Spring Data JPA (Hibernate), Spring Security, Thymeleaf, MySQL, Maven
 
-## Accounts (staff only)
-The kiosk and ticket pages are public. The staff panel needs a login.
-- `/register` - create an account
-- `/login` - log in (Spring Security, passwords are BCrypt hashed)
-- `/forgot-password` - enter your email, a reset link is sent to it
-- `/reset-password?token=...` - choose a new password (link lasts 30 minutes, one use)
+## Screenshots
 
-### Gmail setup for the reset email
-1. Turn on 2-Step Verification on your Google account
-2. Google Account > Security > App passwords > make one for "Mail"
-3. Put your Gmail and the 16 letter app password in `application.properties`
-   (`spring.mail.username` and `spring.mail.password`). Your normal Gmail password will NOT work.
+| Kiosk | Staff login |
+|-------|-------------|
+| ![Kiosk](docs/screenshots/kiosk.png) | ![Login](docs/screenshots/login.png) |
 
-While testing, the reset link is also printed in the console.
+| Staff panel | Wrong password |
+|-------------|----------------|
+| ![Staff panel](docs/screenshots/staff.png) | ![Wrong password](docs/screenshots/login-error.png) |
 
-## How to run
-1. Install Java 21, Maven and MySQL
-2. Open `src/main/resources/application.properties` and put your MySQL username/password and Gmail details
-3. Run `mvn spring-boot:run`
-4. Open http://localhost:8080 (kiosk) and http://localhost:8080/staff (staff, asks you to log in)
+| Logged out | Password reset |
+|------------|----------------|
+| ![Logout](docs/screenshots/logout.png) | ![Reset](docs/screenshots/reset.png) |
 
-The database `queue_db` and its tables are created automatically, and three
-starter services are added (see `DataLoader.java` - change them for your business).
+| Reset email |
+|-------------|
+| ![Email](docs/screenshots/email.jpg) |
 
-## Ideas for later
-- Public display board ("Now serving" screen)
-- Admin page to add/remove services and counters
-- Wait-time reports
+## Features
+
+**Customers (no login needed)**
+- Pick a service at the kiosk and get a ticket number like `A001` (numbers restart every day)
+- Ticket page shows how many people are ahead and refreshes by itself
+- When called, the ticket tells the customer which counter to go to
+
+**Staff (login required)**
+- Create an account, log in and log out
+- Forgot password: a reset link is emailed through Gmail (link expires after 30 minutes and works once)
+- Staff panel per counter: Call Next, Done, Skip (no show)
+- Live list of waiting tickets
+
+**Security**
+- Spring Security protects the staff pages
+- Passwords are hashed with BCrypt, never stored as plain text
+- Reset tokens are random, expire and can only be used once
+- The forgot-password page gives the same message whether or not an email exists
+
+## How it works
+
+1. Customer opens `/` and picks a service, and a ticket is saved with status `WAITING`
+2. Staff open `/staff?counter=1` and press **Call Next**, and the oldest waiting ticket becomes `SERVING`
+3. Staff press **Done** (`DONE`) or **Skip** (`SKIPPED`)
+
+## Project structure
